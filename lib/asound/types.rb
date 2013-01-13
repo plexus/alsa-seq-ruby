@@ -1,4 +1,7 @@
-module AlsaSeq
+require 'asound/event_sugar'
+
+module Asound
+  module Seq
   typedef :uchar, :event_type_t
   typedef :uint,  :tick_time_t
 
@@ -19,6 +22,8 @@ module AlsaSeq
   end
 
   class Event < FFI::Struct
+    include EventSugar
+
     class Data < FFI::Union
       class EvNote < FFI::Struct
         layout :channel      , :uchar, # channel number
@@ -28,16 +33,8 @@ module AlsaSeq
                :duration     , :int    # duration until note-off; only for #SND_SEQ_EVENT_NOTE
       end
       layout :note, EvNote
+      # TODO : add other union members
 
-      # snd_seq_ev_ctrl_t control;        /**< MIDI control information */
-      # snd_seq_ev_raw8_t raw8;           /**< raw8 data */
-      # snd_seq_ev_raw32_t raw32;         /**< raw32 data */
-      # snd_seq_ev_ext_t ext;             /**< external data */
-      # snd_seq_ev_queue_control_t queue; /**< queue control */
-      # snd_seq_timestamp_t time;         /**< timestamp */
-      # snd_seq_addr_t addr;              /**< address */
-      # snd_seq_connect_t connect;        /**< connect information */
-      # snd_seq_result_t result;          /**< operation result code */
     end
 
     layout :type   , :event_type_t,
@@ -51,6 +48,7 @@ module AlsaSeq
 
     end
   end
+end
 
 __END__
 

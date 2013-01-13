@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.expand_path('../lib', File.dirname(__FILE__))
+
+require 'alsa_midi'
+
+midi = AlsaMidi.new( 'notefixer' )
+
+while ev = midi.read_event
+  if ev.note_on? && ev.velocity > 0
+    midi.write_note_off( ev.channel, ev.note, ev.velocity ) rescue nil
+    midi.write_note_on( ev.channel, ev.note, ev.velocity )
+  end
+end
+

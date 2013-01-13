@@ -1,0 +1,8 @@
+Access the ALSA sequencer interface through Ruby FFI.
+
+Mostly a proof of concept ATM, and contains one executable 'notefixer'. A MIDI filter that will take NOTE_ON messages, and if they have a velocity > 0 will emit first a note off and then a note on message.
+
+I needed this because my old Kawai R-50 emits two note on messages, the second with velocity 0, rather that note on/note off. This throws some synths off.
+
+(c) Arne Brasseur
+MIT License
