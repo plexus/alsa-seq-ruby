@@ -1,3 +1,4 @@
+require 'alsa/error'
 require 'asound'
 
 class AlsaMidi
@@ -60,9 +61,8 @@ class AlsaMidi
   end
 
   def check
-    r = yield
-    $err = r
-    raise "Alsa Seq API returned error : #{r}" if r < 0
-    r
+    yield.tap do |return_code|
+      raise Alsa::Error.new(return_code) if return_code < 0
+    end
   end
 end

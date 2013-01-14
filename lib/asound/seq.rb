@@ -33,5 +33,7 @@ module Asound
     aseq_function :client_id, [:pointer]
 
     aseq_function :connect_to, [:pointer, :int, :int, :int]
+
+    attach_function :snd_strerror, :snd_strerror, [:int], :string
   end
 end
